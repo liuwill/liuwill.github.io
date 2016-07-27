@@ -4,37 +4,25 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Liuwill.GitHub.io by liuwill</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-dark.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/liuwill">View On GitHub</a></li>
-        </nav>
-      </div><!-- end header -->
-
     <div class="wrapper">
+      <header>
+        <h1>Liuwill.GitHub.io</h1>
+        <p>在CentOS上升级redis</p>
 
+
+        <p class="view"><a href="https://github.com/liuwill">View My GitHub Profile</a></p>
+
+      </header>
       <section>
-        <div id="title">
-          <h1>Liuwill.GitHub.io</h1>
-          <p>在CentOS上升级redis</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/liuwill">liuwill</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
-        </div>
-
         <blockquote>
 <p>说明：之前安装的是来自wget <a href="http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm">http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm</a> 的yum分发包</p>
 </blockquote>
@@ -173,9 +161,11 @@ exit $?
 
 <p>之后就可以作为服务运行$ service redis-server start最后，配置成开机自启动$ chkconfig redis-server on</p>
       </section>
-
+      <footer>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    <script src="javascripts/scale.fix.js"></script>
     
   </body>
 </html>
