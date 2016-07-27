@@ -1,1 +1,181 @@
-Hello World
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Liuwill.GitHub.io by liuwill</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/liuwill">View On GitHub</a></li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Liuwill.GitHub.io</h1>
+          <p>在CentOS上升级redis</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/liuwill">liuwill</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
+
+        <blockquote>
+<p>说明：之前安装的是来自wget <a href="http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm">http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm</a> 的yum分发包</p>
+</blockquote>
+
+<p>1 首先卸载旧版本的Redis
+<code>yum remove redis</code></p>
+
+<p>2 然后从官方网站安装最新版本，官网有手册</p>
+
+<pre><code>$ wget http://download.redis.io/releases/redis-2.8.8.tar.gz$ tar xzf redis-2.8.8.tar.gz$ cd redis-2.8.8
+$ make
+</code></pre>
+
+<p>安装完成之后redis.conf就是配置文件，src下可以找到编译好的可执行程序</p>
+
+<p><strong>mkreleasehdr.sh</strong>
+<strong>redis-benchmark</strong>****
+<strong>redis-check-aof</strong>****
+<strong>redis-check-dump</strong>****
+<strong>redis-cli</strong>****
+<strong>redis-sentinel</strong>****
+<strong>redis-server</strong>
+其中<strong>redis-server</strong>是服务程序，<strong>redis-cli</strong>是客户端</p>
+
+<p>3 将程序放到便于管理的文件夹，并且设置配置文件
+<code>$ cd src</code>
+在/usr/local/下新建文件夹redis
+<code>$ mkdir /usr/local/redis</code></p>
+
+<p>之后把编译好的redis文件拷贝到/usr/local/redis目录
+ 例如：
+<code>$ cp redis-server/usr/local/redis/ $ cp redis-cli/usr/local/redis/</code>
+然后把redis.conf配置文件复制到etc下 $ cd ..
+<code>$ cp redis.conf/etc/redis.conf</code>
+之后配置环境变量
+<code>$ export PATH=/usr/local/redis:$PATH</code></p>
+
+<p>此时可以执行命令来运行redis 
+$ emacs /etc/redis.conf
+$ redis-cli$ redis-server
+如果要以守护进程方式运行。需要设置redis.conf配置文件
+$ emacs /etc/redis.conf 
+daemonize no 将no改为yes,让redis后台运行4、将redis配置为服务首先创建服务文件
+$ emacs /etc/init.d/redis-server
+$ chmod 775 /etc/init.d/redis-server
+配置文件内容如下：</p>
+
+<pre><code>#
+# redis init file for starting up the redis daemon
+#
+# chkconfig: - 20 80
+# description: Starts and stops the redis daemon.
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+name="redis-server"
+exec="/usr/local/redis/$name"
+pidfile="/var/run/redis/redis.pid"
+REDIS_CONFIG="/etc/redis.conf"
+
+[ -e /etc/sysconfig/redis ] &amp;&amp; . /etc/sysconfig/redis
+
+lockfile=/var/lock/subsys/redis
+
+start() {
+[ -f $REDIS_CONFIG ] || exit 6
+[ -x $exec ] || exit 5
+echo -n $"Starting $name: "
+daemon --user ${REDIS_USER-redis} "$exec $REDIS_CONFIG"
+retval=$?
+echo
+[ $retval -eq 0 ] &amp;&amp; touch $lockfile
+return $retval
+}
+
+stop() {
+echo -n $"Stopping $name: "
+killproc -p $pidfile $name
+retval=$?
+echo
+[ $retval -eq 0 ] &amp;&amp; rm -f $lockfile
+return $retval
+}
+
+restart() {
+stop
+start
+}
+
+reload() {
+false
+}
+
+rh_status() {
+status -p $pidfile $name
+}
+
+rh_status_q() {
+rh_status &gt;/dev/null 2&gt;&amp;1
+}
+
+
+case "$1" in
+start)
+rh_status_q &amp;&amp; exit 0
+$1
+;;
+stop)
+rh_status_q || exit 0
+$1
+;;
+restart)
+$1
+;;
+reload)
+rh_status_q || exit 7
+$1
+;;
+force-reload)
+force_reload
+;;
+status)
+rh_status
+;;
+condrestart|try-restart)
+rh_status_q || exit 0
+restart
+;;
+*)
+echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart}"
+exit 2
+esac
+exit $?
+</code></pre>
+
+<p>之后就可以作为服务运行$ service redis-server start最后，配置成开机自启动$ chkconfig redis-server on</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
